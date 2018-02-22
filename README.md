@@ -1,7 +1,7 @@
 # extract_geo
 Extract geo info from tweet corpus. Read from a folder of txt files, in which one line stores a tweet json.
 
-The output are separate txt files that stores (tweet_id, geo, coordinates, place) in each line.
+The output are separate txt files that stores (tweet_id, geo, coordinates, place, text) in each line.
 
 1. To run the script, python 3 should be installed already.
 2. Please input the folder directory that stores all those txt files.
