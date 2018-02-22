@@ -5,5 +5,5 @@ The output are separate txt files that stores (tweet_id, geo, coordinates, place
 
 1. To run the script, python 3 should be installed already.
 2. Please input the folder directory that stores all those txt files.
-3. Increase or decrease the number of threads if necessary.
+3. Increase or decrease the number of threads (16 in default) if necessary.
 4. Then execute 'python process.py' in terminal (cd to the folder containing process.py or use its absolute path).
