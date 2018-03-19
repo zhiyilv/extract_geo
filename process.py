@@ -24,7 +24,7 @@ except IndexError:
 def do_each_file(file_path):
     if file_path.endswith('.gz'):  # must be gz file
         file_name = os.path.basename(file_path)
-        extracted_file = os.path.join(extract_dir, file_name+'_extracted.gz')  # the path of the extracted file
+        extracted_file = os.path.join(extract_dir, file_name[-3]+'_extracted.gz')  # the path of the extracted file
         print('processing {}, the processed file is in {}'.format(file_name, extracted_file))
 
         with gzip.open(file_path) as f:
