@@ -2,7 +2,6 @@ import os
 import json
 from multiprocessing.dummy import Pool  # use multi-threading instead of multi-processing
 import gzip
-import io
 import sys
 
 

@@ -1,7 +1,6 @@
 import os
 import json
 import gzip
-import io
 import sys
 
 
