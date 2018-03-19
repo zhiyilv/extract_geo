@@ -39,9 +39,8 @@ if __name__ == '__main__':
                                                                                                    extract_dir))
     # start testing
     piece_count = 0  # number of geo info found
-    with gzip.open(file_dir) as f:
-        lines = io.BufferedReader(f)  # buffered read is 2 or 3 times faster
-        for line in lines:
+    with gzip.open(file_dir, 'rt', encoding='utf-8') as f:
+        for line in f:
             try:
                 tweet_json = json.loads(line)  # load each json
             except Exception:
@@ -49,19 +48,18 @@ if __name__ == '__main__':
             else:
                 # only process those geo-tagged tweets
                 if tweet_json['geo'] or tweet_json['coordinates'] or tweet_json['place']:
-                    with gzip.open(os.path.join(extract_dir, extract_file_name), 'w') as fw:
-                        fw.write('{time}--{id}--{usr_id}--{geo}--{cor}--{place}--{text}\n'.format(
-                            time=tweet_json['timestamp_ms'],
-                            id=tweet_json['id'],
-                            usr_id=tweet_json['user']['id'],
-                            geo=tweet_json['geo'] or ' ',
-                            cor=tweet_json['coordinates'] or ' ',
-                            place=tweet_json['place'] or ' ',
-                            text=tweet_json['text']))
+                    info_to_write = [tweet_json['timestamp_ms'], tweet_json['id'], tweet_json['user']['id'],
+                                     tweet_json['geo'] or ' ', tweet_json['coordinates'] or ' ',
+                                     tweet_json['place'] or ' ', tweet_json['text']]
+                    info_to_write = json.dumps(info_to_write)
+                    info_to_write = info_to_write + '\n'
+                    print(info_to_write)
+                    with gzip.open(os.path.join(extract_dir, extract_file_name), 'at', encoding='utf-8') as fw:
+                        fw.write(info_to_write)
                     piece_count += 1
                     if piece_count == 2:  # just extract 2 pieces of geo info
                         break
     print('Please find the file in {}'.format(extract_dir))
-    print('Check whether it contains {} lines in format time--id--usr_id--geo--cor--place--text'.format(piece_count))
+    print('Check whether it contains {} lines of [time,id, usr_id, geo, cor, place, text]'.format(piece_count))
     print('and note that each element will be blank if it does not exist in the json')
 

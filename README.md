@@ -1,7 +1,7 @@
 # extract_geo
 Extract geo info from tweet corpus. Read from a folder of gz files, in which one line stores a tweet json.
 
-The output are separate gz files that store (tweet_time, tweet_id, user_id, geo, coordinates, place, text) in each line.
+The output are separate gz files that store a json in each line, where the json contains [tweet_time, tweet_id, user_id, geo, coordinates, place, text].
 
 **Requirements**:
 1. To run the script, python 3 should be installed already.

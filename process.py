@@ -21,15 +21,15 @@ except IndexError:
                         'will create one in current folder if not provided:\n') or os.path.join(os.getcwd(), 'processed')
 
 
-def do_each_file(file_path):
-    if file_path.endswith('.gz'):  # must be gz file
-        file_name = os.path.basename(file_path)
-        extracted_file = os.path.join(extract_dir, file_name[-3]+'_extracted.gz')  # the path of the extracted file
+def do_each_file(file_name):
+    if file_name.endswith('.gz'):  # must be gz file
+        # file_name = os.path.basename(file_path)
+        file_path = os.path.join(files_folder_dir, file_name)
+        extracted_file = os.path.join(extract_dir, file_name[:-3]+'_extracted.gz')  # the path of the extracted file
         print('processing {}, the processed file is in {}'.format(file_name, extracted_file))
 
-        with gzip.open(file_path) as f:
-            lines = io.BufferedReader(f)  # buffered read is 2 or 3 times faster
-            for line in lines:
+        with gzip.open(file_path, 'rt', encoding='utf-8') as f:
+            for line in f:
                 try:
                     tweet_json = json.loads(line)  # try to load each json
                 except Exception:
@@ -37,15 +37,13 @@ def do_each_file(file_path):
                 else:
                     # only process those geo-tagged tweets
                     if tweet_json['geo'] or tweet_json['coordinates'] or tweet_json['place']:
-                        with gzip.open(extracted_file, 'a') as fw:
-                            fw.write('{time}--{id}--{usr_id}--{geo}--{cor}--{place}--{text}\n'.format(
-                                time=tweet_json['timestamp_ms'],
-                                id=tweet_json['id'],
-                                usr_id=tweet_json['user']['id'],
-                                geo=tweet_json['geo'] or ' ',
-                                cor=tweet_json['coordinates'] or ' ',
-                                place=tweet_json['place'] or ' ',
-                                text=tweet_json['text']))
+                        info_to_write = [tweet_json['timestamp_ms'], tweet_json['id'], tweet_json['user']['id'],
+                                         tweet_json['geo'] or ' ', tweet_json['coordinates'] or ' ',
+                                         tweet_json['place'] or ' ', tweet_json['text']]
+                        info_to_write = json.dumps(info_to_write)
+                        info_to_write = info_to_write + '\n'
+                        with gzip.open(extracted_file, 'at', encoding='utf-8') as fw:
+                            fw.write(info_to_write)
 
 
 if __name__ == '__main__':
