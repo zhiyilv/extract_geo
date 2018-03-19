@@ -8,6 +8,7 @@ The output are separate gz files that stores (tweet_time, tweet_id, user_id, geo
 2. Increase or decrease the number of threads (4 in default) in the process.py if necessary.
 
 **How to use**:
+
 Execute 'script.py [arg1] [arg2]' in terminal (cd to the script folder or use its absolute path).
 * arg1 is the folder directory that contains all gz files
 * arg2 is the folder directory to store the processed files
